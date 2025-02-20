@@ -1,9 +1,10 @@
-LUI 1, 0x80
-addi 2,0,3
-nand 3, 2,1
-nand 4,3,3
-loop: 		beq 4,0,positive
-addi 7,0,1
+nop
+nop
+movi 2, 0x8000
+nand 3, 2, 1
+movi 2, 0x7fff
+movi 7, 0x0000
+beq 3, 2, pos_bit
 halt
-positive: 		add 7,0,0
+pos_bit: addi 7, 7, 1
 halt

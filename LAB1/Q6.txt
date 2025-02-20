@@ -1,13 +1,13 @@
-LUI 1, 0x200
-LUI 5, 13
-LUI 6, 1023
-add 6, 6, 6
-nand 3,5,1
-nand 4,3,3
-loop: 		beq 4,0,positive
-addi 6,6,1
-add 5, 5, 5
+nop // works on java, not online
+nop
+add 6, 0, 2
+add 5, 0, 2
 halt
-positive: 		add 6,6,0
+nand 1, 2, 5
+movi 2, 0x7fff
 add 5, 5, 5
+add 6, 6, 6
+beq 1, 2, pos_bit
+halt
+pos_bit: addi 6, 6, 1
 halt
