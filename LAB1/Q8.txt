@@ -1,0 +1,80 @@
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+
+add 4, 4, 6
+// allows to use R6 from now
+add 1, 0, 3
+addi 2, 0, k15lb
+jalr 7, 2
+add 6, 0, 1 // stores R3 & 0x7fff
+add 1, 0, 5
+addi 2, 0, k15lb
+jalr 7, 2
+add 6, 6, 1 // stores (R3 & 0x7fff + R5 & 0x7fff)
+
+add 1, 0, 5
+addi 2, 0, smtl
+jalr 7, 2
+add 5, 0, 1
+add 1, 0, 3
+addi 2, 0, smtl
+jalr 7, 2
+add 5, 5, 1
+add 1, 0, 6
+addi 2, 0, smtl
+jalr 7, 2
+add 5, 5, 1 // stores (R3 >> 15 + R5 >> 15 + (R3 & 0x7fff + R5 & 0x7fff) >> 15)
+
+add 1, 0, 6
+addi 2, 0, k15lb
+jalr 7, 2
+add 3, 0, 1 // stores (R3 + R5) & 0xffff
+
+beq 5, 0, stop
+addi 2, 0, 1
+beq 5, 2, a1tm
+addi 4, 4, 1
+addi 2, 0, 3
+beq 5, 2, a1tm
+
+stop: halt // case R5 == 00 || R5 == 10
+
+// add 1 to MSB
+// I/O in R3
+// uses R7 (no return)
+a1tm: movi 7, 0x8000
+add 3, 3, 7
+halt
+
+// keep 15 lowest bits
+// I/O in R1
+// uses R2, R7 is the return
+k15lb: movi 2, 0x7fff
+nop
+nand 1, 1, 2
+movi 2, 0xffff
+nop
+nand 1, 1, 2
+jalr 0, 7
+
+// shifts MSB to LSB
+// I/O in R1
+// uses R2, R7 is the return
+smtl: movi 2, 0x8000
+nop
+nand 1, 1, 2
+movi 2, 0x7fff
+nop
+beq 1, 2, smtlcase1
+add 1, 0, 0
+jalr 0, 7
+smtlcase1: addi 1, 0, 1
+jalr 0, 7
