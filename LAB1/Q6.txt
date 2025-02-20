@@ -1,0 +1,13 @@
+LUI 1, 0x200
+LUI 5, 13
+LUI 6, 1023
+add 6, 6, 6
+nand 3,5,1
+nand 4,3,3
+loop: 		beq 4,0,positive
+addi 6,6,1
+add 5, 5, 5
+halt
+positive: 		add 6,6,0
+add 5, 5, 5
+halt

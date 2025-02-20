@@ -1,0 +1,9 @@
+LUI 1, 0x80
+addi 2,0,3
+nand 3, 2,1
+nand 4,3,3
+loop: 		beq 4,0,positive
+addi 7,0,1
+halt
+positive: 		add 7,0,0
+halt
